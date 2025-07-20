@@ -32,7 +32,23 @@ int main() {
                         map.mapMove(1);
                         break;
                     case sf::Keyboard::W :
-                        map.mapMove(2);
+                        for (int i = 1; i <= 30; ++i) {
+                        window.clear();
+
+                        float LEN = block.getLen();
+                        float LENDIA = block.getLenDiagonal();
+
+                        float dx = LEN * (i / 30.0f);
+                        float dy = LENDIA * (i / 30.0f);
+
+                        map.mapping(window, block, {BASE.x - dx, BASE.y + dy});
+
+                        window.display();
+                        sf::sleep(sf::milliseconds(0.2)); 
+                        }
+                        map.mapMove(2); 
+
+
                         break;
                     case sf::Keyboard::A :
                         map.mapMove(3);
