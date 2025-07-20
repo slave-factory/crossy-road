@@ -6,9 +6,34 @@
 
 void Mapping::mapping(sf::RenderWindow& window, Block& block, const sf::Vector2f& base) {
 
-    const int MAX_Z = 5;
 
-    int temp[MAX_Z][Mapping::MAPLEN][Mapping::MAPLEN] = {
+    
+    float tileW = block.getLen();
+    float tileH = block.getLen(); 
+
+    
+
+    for (int z = 0; z <= MAX_Z; ++z) {
+        for (int y = 0; y < Mapping::MAPLEN; ++y) {
+            for (int x = 0; x < Mapping::MAPLEN; ++x) {
+                if (mapTile[z][y][x] == 1) {
+                    // 등각 투영 변환 + 높이 보정
+                    float screenX = base.x + (x - y) * tileW;
+                    float screenY = base.y + (x + y) * tileH - z * tileH*0.75; // z 높이만큼 위로 올림
+
+                    sf::Vector2f pos(screenX, screenY);
+                    block.draw(window, pos);
+                }
+            }
+        }
+    }
+
+
+
+    
+}
+void Mapping::initMap() {
+    static int temp[Mapping::MAX_Z][Mapping::MAPLEN][Mapping::MAPLEN] = {
 
         {
             {0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0},
@@ -144,32 +169,42 @@ void Mapping::mapping(sf::RenderWindow& window, Block& block, const sf::Vector2f
 
         
     };
+    
     for(int t = 0; t < 5; ++t)
         for (int i = 0; i < MAPLEN; ++i)
             for (int j = 0; j < MAPLEN; ++j)
                 mapTile[t][i][j] = temp[t][i][j];
-    
-    float tileW = block.getLen();
-    float tileH = block.getLen(); 
+}
 
-    
-
-    for (int z = 0; z <= MAX_Z; ++z) {
-        for (int y = 0; y < Mapping::MAPLEN; ++y) {
-            for (int x = 0; x < Mapping::MAPLEN; ++x) {
-                if (mapTile[z][y][x] == 1) {
-                    // 등각 투영 변환 + 높이 보정
-                    float screenX = base.x + (x - y) * tileW;
-                    float screenY = base.y + (x + y) * tileH - z * tileH*0.75; // z 높이만큼 위로 올림
-
-                    sf::Vector2f pos(screenX, screenY);
-                    block.draw(window, pos);
-                }
-            }
-        }
+void Mapping::mapMove(int dir) {
+    // 뒤
+    if(dir == 1) {
+        for(int t = 0; t < 5; ++t)
+            for (int i = 0; i < MAPLEN-1; ++i)
+                for (int j = 0; j < MAPLEN; ++j)
+                    mapTile[t][i][j] = mapTile[t][i+1][j];
+    }
+    // 앞
+    if(dir == 2) {
+        for(int t = 0; t < 5; ++t)
+            for (int i = MAPLEN - 1; i > 0; --i)
+                for (int j = 0; j < MAPLEN; ++j)
+                    mapTile[t][i][j] = mapTile[t][i-1][j];
+    }
+    //왼
+    if(dir == 3) {
+        for(int t = 0; t < 5; ++t)
+            for (int i = 0; i < MAPLEN; ++i)
+                for (int j = MAPLEN - 1; j > 0; --j)
+                    mapTile[t][i][j] = mapTile[t][i][j-1];
     }
 
+    //오른
+    if(dir == 4) {
+        for(int t = 0; t < 5; ++t)
+            for (int i = 0; i < MAPLEN; ++i)
+                for (int j = 0; j < MAPLEN - 1; ++j)
+                    mapTile[t][i][j] = mapTile[t][i][j+1];
+    }
 
-
-    
 }

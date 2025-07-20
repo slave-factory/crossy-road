@@ -18,15 +18,36 @@ int main() {
     );
 
     // 게임 루프 시작
+    map.initMap();
     while (window.isOpen()) {
         sf::Event event;
-        while (window.pollEvent(event))
-            if (event.type == sf::Event::Closed)
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
                 window.close();
+            }
+            if (event.type == sf::Event::KeyPressed) {
+
+                switch (event.key.code) {
+                    case sf::Keyboard::S :
+                        map.mapMove(1);
+                        break;
+                    case sf::Keyboard::W :
+                        map.mapMove(2);
+                        break;
+                    case sf::Keyboard::A :
+                        map.mapMove(4);
+                        break;
+                    case sf::Keyboard::D :
+                        map.mapMove(3);
+                        break;
+                }
+                
+            }
+        }
+            
 
         window.clear();
         map.mapping(window, block, BASE);
-        
         window.display();
     }
     return 0;
