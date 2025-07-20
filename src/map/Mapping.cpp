@@ -17,14 +17,18 @@ void Mapping::mapping(sf::RenderWindow& window, Block& block, const sf::Vector2f
     for (int z = 0; z <= MAX_Z; ++z) {
         for (int y = 1; y < Mapping::MAPLEN - 1; ++y) {
             for (int x = 1; x < Mapping::MAPLEN - 1; ++x) {
-                if (mapTile[z][y][x] == 1) {
+                if(mapTile[z][y][x]) {
                     // 등각 투영 변환 + 높이 보정
                     float screenX = base.x + (x - y) * tileW;
                     float screenY = base.y + (x + y) * tileH - z * tileH*0.75; // z 높이만큼 위로 올림
 
                     sf::Vector2f pos(screenX, screenY);
-                    block.draw(window, pos);
+                    block.draw(window, pos, mapTile[z][y][x]);
+
                 }
+                     
+                    
+                
             }
         }
     }
@@ -33,6 +37,20 @@ void Mapping::mapping(sf::RenderWindow& window, Block& block, const sf::Vector2f
 
     
 }
+
+void Mapping::placeGhostBlock() {
+    // 이전 유령 블록 제거
+    for (int z = 0; z <= MAX_Z; ++z)
+        for (int y = 0; y < MAPLEN; ++y)
+            for (int x = 0; x < MAPLEN; ++x)
+                if (mapTile[z][y][x] == 2)
+                    mapTile[z][y][x] = 0;
+
+    // 새 위치에만 생성
+    mapTile[ghostZ][ghostY][ghostX] = 2;
+}
+
+
 void Mapping::initMap() {
     static int temp[Mapping::MAX_Z][Mapping::MAPLEN][Mapping::MAPLEN] = {
 
@@ -178,6 +196,7 @@ void Mapping::initMap() {
 }
 
 void Mapping::mapMove(int dir) {
+
     // 뒤
     if(dir == 1) {
         for(int t = 0; t < 5; ++t) {
@@ -244,7 +263,7 @@ void Mapping::mapMove(int dir) {
     if(dir == 4) {
         for(int t = 0; t < 5; ++t) {
             for (int i = 0; i < MAPLEN; ++i) {
-                for (int j = MAPLEN - 1; j >= 0; --j) {
+                for (int j = MAPLEN - 1 ; j >= 0; --j) {
                     if(j != 0) mapTile[t][i][j] = mapTile[t][i][j-1];
                     else {
                         mapTile[t][i][j] = 0;
@@ -253,5 +272,4 @@ void Mapping::mapMove(int dir) {
             }
         }
     }
-
 }

@@ -51,10 +51,10 @@ int main() {
 
                         break;
                     case sf::Keyboard::A :
-                        map.mapMove(3);
+                        map.mapMove(4);
                         break;
                     case sf::Keyboard::D :
-                        map.mapMove(4);
+                        map.mapMove(3);
                         break;
                 }
                 

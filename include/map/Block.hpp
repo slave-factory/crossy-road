@@ -13,7 +13,7 @@ private:
 public:
     Block(sf::RenderWindow& window, Mapping& map); // 생성자 선언
 
-    void draw(sf::RenderWindow& window, const sf::Vector2f& base);
+    void draw(sf::RenderWindow& window, const sf::Vector2f& base, int color);
     float getLenDiagonal() const { return lenDiagonal; }
     float getLen() const { return len; }
     
