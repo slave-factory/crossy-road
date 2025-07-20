@@ -1,6 +1,7 @@
 
-#include <iostream>
+#include <iostream> 
 #include <SFML/Graphics.hpp>
+#include <random>
 #include "map/Block.hpp"
 #include "map/Mapping.hpp"
 
@@ -14,8 +15,8 @@ void Mapping::mapping(sf::RenderWindow& window, Block& block, const sf::Vector2f
     
 
     for (int z = 0; z <= MAX_Z; ++z) {
-        for (int y = 0; y < Mapping::MAPLEN; ++y) {
-            for (int x = 0; x < Mapping::MAPLEN; ++x) {
+        for (int y = 1; y < Mapping::MAPLEN - 1; ++y) {
+            for (int x = 1; x < Mapping::MAPLEN - 1; ++x) {
                 if (mapTile[z][y][x] == 1) {
                     // 등각 투영 변환 + 높이 보정
                     float screenX = base.x + (x - y) * tileW;
@@ -179,32 +180,78 @@ void Mapping::initMap() {
 void Mapping::mapMove(int dir) {
     // 뒤
     if(dir == 1) {
-        for(int t = 0; t < 5; ++t)
-            for (int i = 0; i < MAPLEN-1; ++i)
-                for (int j = 0; j < MAPLEN; ++j)
-                    mapTile[t][i][j] = mapTile[t][i+1][j];
+        for(int t = 0; t < 5; ++t) {
+            for (int i = 0; i < MAPLEN-1; ++i) {
+                for (int j = 0; j < MAPLEN; ++j) {
+                    if(i != MAPLEN - 2) mapTile[t][i][j] = mapTile[t][i+1][j];
+                    else {
+                        mapTile[t][i][j] = 0;
+                    }
+                }
+            }
+        }
     }
     // 앞
     if(dir == 2) {
-        for(int t = 0; t < 5; ++t)
-            for (int i = MAPLEN - 1; i > 0; --i)
-                for (int j = 0; j < MAPLEN; ++j)
-                    mapTile[t][i][j] = mapTile[t][i-1][j];
+        for(int t = 0; t < 5; ++t) {
+            for (int i = MAPLEN - 1; i >= 0; --i) {
+                for (int j = 0; j < MAPLEN; ++j) {
+                    if(i != 0) mapTile[t][i][j] = mapTile[t][i-1][j];
+                    else {
+                        mapTile[t][i][j] = 0;
+                    }
+                }
+            }
+        }
+        
+        std::random_device rd;                     // 하드웨어 엔트로피
+        std::mt19937 gen(rd());                    // Mersenne Twister 엔진
+        std::uniform_int_distribution<> dist(1, 10); // 1~10 난수
+
+        for(int t = 0; t < 5; ++t) {
+            for (int j = 0; j < MAPLEN; ++j) {
+                if(t == 0) {
+                    if(dist(gen) <= 3) {
+                        mapTile[t][0][j] = 1;
+                    }
+                }
+                else {
+                    if(dist(gen) <= 3 && mapTile[t-1][0][j]) {
+                        mapTile[t][0][j] = 1;
+                    }
+                }
+                
+            }
+        }
+                
     }
     //왼
     if(dir == 3) {
-        for(int t = 0; t < 5; ++t)
-            for (int i = 0; i < MAPLEN; ++i)
-                for (int j = MAPLEN - 1; j > 0; --j)
-                    mapTile[t][i][j] = mapTile[t][i][j-1];
+        for(int t = 0; t < 5; ++t) {
+            for (int i = 0; i < MAPLEN; ++i) {
+                for (int j = 0; j < MAPLEN - 1; ++j) {
+                    if(j != MAPLEN - 2) mapTile[t][i][j] = mapTile[t][i][j+1];
+                    else {
+                        mapTile[t][i][j] = 0;
+                    }
+                }
+            }
+        }
     }
+    
 
     //오른
     if(dir == 4) {
-        for(int t = 0; t < 5; ++t)
-            for (int i = 0; i < MAPLEN; ++i)
-                for (int j = 0; j < MAPLEN - 1; ++j)
-                    mapTile[t][i][j] = mapTile[t][i][j+1];
+        for(int t = 0; t < 5; ++t) {
+            for (int i = 0; i < MAPLEN; ++i) {
+                for (int j = MAPLEN - 1; j >= 0; --j) {
+                    if(j != 0) mapTile[t][i][j] = mapTile[t][i][j-1];
+                    else {
+                        mapTile[t][i][j] = 0;
+                    }
+                }
+            }
+        }
     }
 
 }
