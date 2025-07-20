@@ -1,4 +1,4 @@
-#include "Map.hpp"
+#include "include/map/Map.hpp"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 

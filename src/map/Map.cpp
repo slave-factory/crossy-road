@@ -1,2 +1,6 @@
 #include "Map.hpp"
-#include <SFML/Graphics.hpp>
+#include <iostream>
+
+void Map::draw(sf::RenderTarget& target) {
+    
+}
