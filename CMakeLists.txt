@@ -13,7 +13,8 @@ find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 
 add_executable(main 
             src/main.cpp
-            src/map/Map.cpp
+            src/map/Block.cpp
+            src/map/Mapping.cpp
             )
 
 target_link_libraries(main sfml-graphics sfml-window sfml-system)

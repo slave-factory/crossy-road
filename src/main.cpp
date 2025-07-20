@@ -1,13 +1,22 @@
-#include "map/Map.hpp"
+#include "map/Block.hpp"
+#include "map/Mapping.hpp"
+
 #include <iostream>
 
+const sf::Vector2f WINDOW = {800, 800};
 int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 800), "Hello SFML");
+    sf::RenderWindow window(sf::VideoMode(WINDOW.x, WINDOW.y), "Crossy Road");
     window.setVerticalSyncEnabled(false);
 
     //MAP 
-    Map block;
-    sf::Vector2f BASE = {400, 400};
+    Mapping map;
+    Block block(window, map); 
+   
+    sf::Vector2f BASE(
+    window.getSize().x / 2.f,                       // 화면 가로 중앙
+    window.getSize().y / 2.f - block.getLen() * map.MAPLEN  // 화면 아래 중앙으로 약간 올림
+    );
+
     // 게임 루프 시작
     while (window.isOpen()) {
         sf::Event event;
@@ -16,10 +25,8 @@ int main() {
                 window.close();
 
         window.clear();
-        block.draw(window,BASE);
-        block.draw(window,{BASE.x + block.len, BASE.y + block.len});
-        block.draw(window,{BASE.x + block.len, BASE.y - block.len});
-        block.draw(window,{BASE.x + block.len - block.len, BASE.y - block.len - block.len});
+        map.mapping(window, block, BASE);
+        
         window.display();
     }
     return 0;

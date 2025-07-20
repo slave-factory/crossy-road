@@ -1,18 +1,25 @@
-
-#include "map/Map.hpp"
 #include "SFML/Graphics.hpp"
 #include <iostream>
+#include "map/Mapping.hpp"
+#include "map/Block.hpp"  
 
-void Map::draw(sf::RenderWindow& window, const sf::Vector2f& base) {
+
+Block::Block(sf::RenderWindow& window, Mapping& map)
+    : len(static_cast<float>(window.getSize().x) / Mapping::MAPLEN * 0.75),
+      lenDiagonal(len / std::sqrt(2.0f)) {
+  
+}
+
+void Block::draw(sf::RenderWindow& window, const sf::Vector2f& base) {
     
     sf::Vector2f points[7] = {
         {base.x, base.y}, // 0
         {base.x, base.y - 2*len}, // 1
         {base.x + len, base.y - len}, // 2
-        {base.x + len, base.y - len + lenDigonal}, // 3
-        {base.x, base.y + lenDigonal}, // 4
-        {base.x - len, base.y - len + lenDigonal}, // 5
-        {base.x - len, base.y - len}, // 6
+        {base.x + len, base.y - len + lenDiagonal}, // 3
+        {base.x, base.y + lenDiagonal}, // 4
+        {base.x - len, base.y - len + lenDiagonal}, // 5
+        {base.x - len, base.y - len} // 6
     };
 
     sf::Vertex lines[] = {
