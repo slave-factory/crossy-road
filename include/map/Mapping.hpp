@@ -7,6 +7,6 @@ class Block;
 class Mapping {
     public:
         static const int MAPLEN  = 20;
-        int mapTile[MAPLEN][MAPLEN];
+        int mapTile[5][MAPLEN][MAPLEN];
         void mapping(sf::RenderWindow& window, Block& Block, const sf::Vector2f& base);
 };
