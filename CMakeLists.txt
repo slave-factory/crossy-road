@@ -9,9 +9,17 @@ project(
 
 set(CMAKE_CXX_STANDARD 17)
 
+# SFML 찾기
 find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 
-add_executable(main src/main.cpp)
+# 모든 cpp 파일 자동 수집
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
+# 실행 파일 생성
+add_executable(main ${SOURCES})
+
+# SFML 라이브러리 연결
 target_link_libraries(main sfml-graphics sfml-window sfml-system)
-include_directories(${PROJECT_SOURCE_DIR}/include)
+
+# 헤더 디렉토리 추가 (include/ 내부의 헤더들을 경로 없이 사용)
+target_include_directories(main PRIVATE ${PROJECT_SOURCE_DIR}/include)
