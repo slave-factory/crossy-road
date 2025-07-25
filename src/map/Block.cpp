@@ -55,7 +55,40 @@ void Block::draw(sf::RenderWindow& window, const sf::Vector2f& base, int color) 
         return;
     }
     
+    if (color == 2) {
+        // 윗면
+        sf::ConvexShape top;
+        top.setPointCount(4);
+        top.setPoint(0, points[0]); // 꼭대기
+        top.setPoint(1, points[2]);
+        top.setPoint(2, points[1]);
+        top.setPoint(3, points[6]);
+        top.setFillColor(sf::Color(100, 100, 100));  // 밝은 검정
+        window.draw(top);
 
+        // 오른쪽 면
+        sf::ConvexShape right;
+        right.setPointCount(4);
+        right.setPoint(0, points[0]);
+        right.setPoint(1, points[2]);
+        right.setPoint(2, points[3]);
+        right.setPoint(3, points[4]);
+        right.setFillColor(sf::Color(60, 60, 60));  // 중간 검정
+        window.draw(right);
+
+        // 왼쪽 면
+        sf::ConvexShape left;
+        left.setPointCount(4);
+        left.setPoint(0, points[0]);
+        left.setPoint(1, points[4]);
+        left.setPoint(2, points[5]);
+        left.setPoint(3, points[6]);
+        left.setFillColor(sf::Color(20, 20, 20));  // 어두운 검정
+        window.draw(left);
+
+
+        return;
+    }
 
     
 }

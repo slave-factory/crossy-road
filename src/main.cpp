@@ -11,11 +11,13 @@ int main() {
     //MAP 
     Mapping map;
     Block block(window, map); 
-   
+    float diagOffset = block.getLen() * 5 / std::sqrt(2.0f);
+
     sf::Vector2f BASE(
-    window.getSize().x / 2.f,                       // 화면 가로 중앙
-    window.getSize().y / 2.f - block.getLen() * map.MAPLEN  // 화면 아래 중앙으로 약간 올림
+        window.getSize().x / 2.f + diagOffset, 
+        window.getSize().y / 2.f - block.getLen() * map.MAPLEN - diagOffset 
     );
+
 
     // 게임 루프 시작
     map.initMap();
@@ -51,10 +53,10 @@ int main() {
 
                         break;
                     case sf::Keyboard::A :
-                        map.mapMove(4);
+                        map.mapMove(3);
                         break;
                     case sf::Keyboard::D :
-                        map.mapMove(3);
+                        map.mapMove(4);
                         break;
                 }
                 
