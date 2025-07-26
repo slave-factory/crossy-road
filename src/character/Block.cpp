@@ -1,7 +1,7 @@
 #include "character/Block.hpp"
 
-Block::Block(int x, int y, int z, sf::Vector2f start) : top(sf::Triangles, 6), right(sf::Triangles, 6), left(sf::Triangles, 6),
-    gridX(x), gridY(y), gridZ(z), startingPosition(start) {
+Block::Block(int x, int y, int z, sf::Vector2f start) : top(sf::Triangles, 6), right(sf::Triangles, 6), left(sf::Triangles, 6), startingPosition(start),
+    gridX(x), gridY(y), gridZ(z) {
 
     initSetting();
 }   
@@ -11,7 +11,7 @@ void Block::initSetting() {
     // cube의 3D 논리 좌표를 2D 격자 좌표로 변경
     // 실제로는 300을 더하는 것이 아니라 공간을 잘라서 진행해야 함
     for (int i = 0; i < POINT_COUNT; i++) {
-        points[i] = convertIsometric(gridX + cube[i].x, gridY + cube[i].y , gridZ + cube[i].z) + startingPosition;
+        points[i] = convertIsometric(gridX + cube[i].x, gridY + cube[i].y ,gridZ + cube[i].z) + startingPosition;
     }
 
     // top
@@ -63,7 +63,7 @@ void Block::initSetting() {
 sf::Vector2f Block::convertIsometric(int x, int y, int z) const {
     return {
         (x - y) * BLOCK_WIDTH / 2.0f,
-        (x + y) * BLOCK_DEPTH / 2.0f - z * BLOCK_HEIGHT * 0.3f
+        (x + y) * BLOCK_DEPTH / 2.0f - z * BLOCK_HEIGHT * 0.5f
     };
 }
 
@@ -73,4 +73,10 @@ void Block::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(left, states);
     target.draw(right, states);
     target.draw(lines, states);
+}
+
+// 만들어지는 전체 캐릭터의 중심점을 반환
+// 다른 클래스로 옮기는 것도 좋은데, 아직 고민 중
+sf::Vector2f Block::getCenter() {
+    return  convertIsometric(gridX + cube[0].x, gridY + cube[0].y ,gridZ + cube[0].z) + startingPosition;
 }

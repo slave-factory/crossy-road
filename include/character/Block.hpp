@@ -1,6 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include <algorithm>
 
 // 실제 좌표가 아닌 격자 좌표를 기준으로 만들기
 
@@ -9,6 +11,7 @@ class Block : public sf::Drawable, public sf::Transformable{
     private:
 
         void initSetting();
+
         sf::VertexArray top, left, right, lines;
         sf::Vector2f convertIsometric(int x, int y, int z) const;
         
@@ -33,6 +36,11 @@ class Block : public sf::Drawable, public sf::Transformable{
 
         sf::Vector2f startingPosition;
     public:
+
+        // 논리 좌표 x, y, z를 기준으로 블럭 생성
         Block(int x, int y, int z, sf::Vector2f start);
-        static constexpr float BLOCK_WIDTH = 48.f, BLOCK_DEPTH = 48.f, BLOCK_HEIGHT = 80.f;
+        static constexpr float BLOCK_WIDTH = 12.f, BLOCK_DEPTH = 12.f, BLOCK_HEIGHT = 20.f;
+    
+        // 3D 도형의 중심점을 얻기 위한 함수
+        sf::Vector2f getCenter();
 };
