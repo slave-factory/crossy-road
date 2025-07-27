@@ -46,34 +46,13 @@ void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     움직임의 작동 원리 : n초 동안 d만큼 이동한다 X -> d만큼 이동하기 위해 n초를 사용한다
     움직이는 시간의 최대치를 정해두고 그 시간 안에 점프를 마무리하는 방식으로 로직을 구현했기에
     이동거리보다는 이동시간에 더욱 중점을 둔 이동 방식
-    ==> 솔직히 더 좋은 방법이 있을 거 같은데, 아직 아이디어가 없음
-
-    @todo
-    이동 방향에 따라 x,y 방향의 시작 속도가 달라질 수 있기 때문에 이를 수정할 필요 있음
+    ==> 0.2초 정확하게 맞추는 건 성공
 
     @param dt
 */
 void Character::move(float dt) {
-
-    switch (currentDirection) {
-        case Direction::FRONT : {
-            setPosition(getPosition().x + velocity.x * dt, getPosition().y + (velocity.y * dt + 0.5f * gravity.y * dt * dt));
-            velocity.y += gravity.y * dt;
-            break;
-        }
-        case Direction::BACK : {
-            setPosition(getPosition().x - 10.f, getPosition().y + 10.f);
-            break;
-        }
-        case Direction::LEFT : {
-            setPosition(getPosition().x - 10.f, getPosition().y - 10.f);
-            break;
-        }
-        case Direction::RIGHT : {
-            setPosition(getPosition().x + 10.f, getPosition().y + 10.f);
-            break;
-        }
-    }
+    setPosition(getPosition().x + velocity.x * dt, getPosition().y + (velocity.y * dt + 0.5f * gravity.y * dt * dt));
+    velocity.y += gravity.y * dt;
 }
 
 /**
@@ -142,15 +121,22 @@ void Character::changeDirection(bool isRight) {
  */
 bool Character::checkCurrentJumpTime(float dt) {
 
-    currentJumpTime += dt;;
-
     if (currentJumpTime >= JUMP_TIME) {
-        currentJumpTime = 0;
-        velocity.y = -740.f;    // 수정 필요 -> move 함수 부분 확인
         return true;
     }
     else {
-        return false;
+
+        if (currentJumpTime + dt >= JUMP_TIME) {
+            // 제한 시간을 넘길 경우, 제한 시간까지 남은 시간을 계산하여 move
+            // 어떠한 deltaTime이 넘어오더라도 정확하게 JUMP_TIME을 맞추기 위한 과정
+            move(JUMP_TIME - currentJumpTime);
+            currentJumpTime = 0;
+            return true;
+        }
+        else {
+            currentJumpTime += dt;
+            return false;
+        }
     }
 
 }

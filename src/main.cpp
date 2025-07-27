@@ -1,13 +1,6 @@
-// 이거 상당히 어려운데요
-
 #include "character/Character.hpp"
 
 /*
-    1. 중심점 계산 공식
-    2. 캐릭터 생성
-    3. 운동 공식 적용
-
-
     나중에 할 때는 Character 내부에 있는 
     design 배열에 std::swap 사용해서 json 내용과 바꾸기
 */
@@ -48,14 +41,36 @@ int main() {
 
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
                     character.setIsJumping(true);
+                    
+                    // 현재 방향에 따라서 x,y축 방향으로의 시작 속도 설정
+                    switch (character.getCurrentDirection())
+                    {
+                        case Direction::FRONT : {
+                            character.setVelocity(sf::Vector2f(250.f, -740.f));
+                            break;
+                        }
+                        case Direction::BACK : {
+                            character.setVelocity(sf::Vector2f(-250.f, -240.f));
+                            break;
+                        }
+                        case Direction::LEFT : {
+                            character.setVelocity(sf::Vector2f(-250.f, -740.f));
+                            break;
+                        }
+                        case Direction::RIGHT : {
+                            character.setVelocity(sf::Vector2f(250.f, -240.f));
+                            break;
+                        }
+                    }
                 }
             }
         }
-        else {  // 점프 중일 때는 점프만
-            character.move(deltaTime);
+        else {  // 점프 중일 때는 점프만 ==> 점프 딜레이 고려하기
             if (character.checkCurrentJumpTime(deltaTime)) {
                 character.setIsJumping(false);
+                continue;
             }
+            character.move(deltaTime);
         }
 
 

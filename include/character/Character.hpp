@@ -338,9 +338,21 @@ class Character : public sf::Drawable, public sf::Transformable{
 
         // 점프 중에는, 다른 입력을 무시할 수 있도록 하기
         void setIsJumping(bool isJumping) {
-            this->isJumping = isJumping;
+            this->isJumping = isJumping;   
         }
         bool getIsJumping() {
             return isJumping;
+        }
+
+        /**
+         *  @brief 속도를 설정할 수 있는 함수
+         *  @details 이동 방향에 따른 시작 속도 차이를 해소하기 위한 함수
+         */
+        void setVelocity(sf::Vector2f velocity) {
+            this->velocity = velocity;
+        }
+    
+        Direction getCurrentDirection() {
+            return currentDirection;
         }
 };
