@@ -1,8 +1,10 @@
 #include "character/Character.hpp"
 
 /*
-    나중에 할 때는 Character 내부에 있는 
-    design 배열에 std::swap 사용해서 json 내용과 바꾸기
+    고민 중인 내용
+
+    1. 캐릭터 사이즈 축소
+    2. 충돌 범위 설정 => 바로 window에 그린 그림이므로 히트 박스 설정이 필요하다
 */
 
 int main() {
@@ -28,8 +30,6 @@ int main() {
                 if (event.type == sf::Event::Closed) {
                     window.close();
                 }
-
-                // 이동 및 회전 이벤트
                 if(event.type == sf::Event::KeyReleased) {
                     if (event.key.code == sf::Keyboard::Left) {
                         character.changeDirection(false);
@@ -38,6 +38,15 @@ int main() {
                         character.changeDirection(true);
                     }
                 }
+
+                // 캐릭터 변경을 확인하기 위한 임시 기능
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+                    character.changeCharacter("chicken");
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+                    character.changeCharacter("cross");
+                }
+                // 캐릭터 변경을 확인하기 위한 임시 기능
 
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
                     character.setIsJumping(true);

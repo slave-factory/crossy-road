@@ -14,14 +14,13 @@ void Character::initSetting() {
     sf::Vector2f center = temp.getCenter();
     setOrigin(center);
     setPosition(center);
+    loadFromJson("cross");
 }
 
 
 /**
  *  @brief 캐릭터를 화면에 그리는 함수
- *  @details design 3차원 배열을 읽어서 window에 직접 그림
- * 
- * 
+ *  @details design 3차원 배열을 읽어서 window에 직접 그림 
  */
 void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     states.transform *= getTransform();
@@ -58,9 +57,6 @@ void Character::move(float dt) {
 /**
  *  @brief 캐릭터를 회전시키는 함수
  *  @details rotated 배열에 design을 회전시켜서 저장한 후 다시 받아옴
- * 
- *  @todo design 3차원 배열은 이후 JSON에서 받아오는 내용으로 개선 가능
- * 
  */
 void Character::rotateCharacter(bool isRight) {
     int rotated[CHARACTER_DEPTH][CHARACTER_HEIGHT][CHARACTER_WIDTH];
@@ -94,7 +90,11 @@ void Character::rotateCharacter(bool isRight) {
     }
 }
 
-// enum 클래스의 순서를 기반으로 방향 변경
+/**
+ *  @brief 캐릭터의 이동 방향 변경 함수
+ *  @details enum 클래스에 선언된 방향을 기준으로 캐릭터의 방향 변경
+ */
+
 void Character::changeDirection(bool isRight) {
 
     int curr = static_cast<int>(currentDirection);
@@ -125,7 +125,6 @@ bool Character::checkCurrentJumpTime(float dt) {
         return true;
     }
     else {
-
         if (currentJumpTime + dt >= JUMP_TIME) {
             // 제한 시간을 넘길 경우, 제한 시간까지 남은 시간을 계산하여 move
             // 어떠한 deltaTime이 넘어오더라도 정확하게 JUMP_TIME을 맞추기 위한 과정
@@ -138,5 +137,31 @@ bool Character::checkCurrentJumpTime(float dt) {
             return false;
         }
     }
+}
 
+/**
+ *  @brief json으로부터 캐릭터의 정보를 읽어오는 함수
+ *  @details json으로부터 캐릭터의 3차원 배열을 읽어와 design 3차원 배열에 저장
+ *  @param character
+ */
+void Character::loadFromJson(const std::string& characterName) {
+
+    std::ifstream file("assets/character/character.json");
+    json jsonFile;
+    file >> jsonFile;
+
+    auto& picture = jsonFile[characterName];
+
+    for (int z = 0; z < picture.size(); z++) {
+        for (int y = 0; y < picture[z].size(); y++) {
+            for (int x = 0; x < picture[z][y].size(); x++) {
+                design[z][y][x] = picture[z][y][x];
+            }
+        }
+    }
+}
+
+void Character::changeCharacter(const std::string& characterName) {
+    loadFromJson(characterName);
+    currentDirection = Direction::FRONT;
 }

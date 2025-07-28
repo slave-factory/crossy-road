@@ -59,11 +59,13 @@ void Block::initSetting() {
     }
 }
 
-// 등각 투영 너무 어려워요, 공식이 무슨 뜻인지 모르겠음
+/**
+ *  @brief 등각투영을 통해 3차원 좌표를 2차원으로 변경해주는 함수
+ */
 sf::Vector2f Block::convertIsometric(int x, int y, int z) const {
     return {
         (x - y) * BLOCK_WIDTH / 2.0f,
-        (x + y) * BLOCK_DEPTH / 2.0f - z * BLOCK_HEIGHT * 0.5f
+        (x + y) * BLOCK_DEPTH / 2.0f - z * BLOCK_HEIGHT * 0.4f
     };
 }
 
