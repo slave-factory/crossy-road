@@ -31,6 +31,10 @@ class Character : public sf::Drawable, public sf::Transformable{
 
         void loadFromJson(const std::string& characterName);
 
+        sf::CircleShape hit;
+        sf::FloatRect hitBox;
+        sf::RectangleShape bounds;
+
         // z가 클수록 윗층에 배치
         int design[20][13][13];
 

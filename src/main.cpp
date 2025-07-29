@@ -86,6 +86,5 @@ int main() {
         window.clear();
         window.draw(character);
         window.display();
-
     }
 }

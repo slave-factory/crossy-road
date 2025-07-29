@@ -9,7 +9,6 @@ Block::Block(int x, int y, int z, sf::Vector2f start) : top(sf::Triangles, 6), r
 void Block::initSetting() {
 
     // cube의 3D 논리 좌표를 2D 격자 좌표로 변경
-    // 실제로는 300을 더하는 것이 아니라 공간을 잘라서 진행해야 함
     for (int i = 0; i < POINT_COUNT; i++) {
         points[i] = convertIsometric(gridX + cube[i].x, gridY + cube[i].y ,gridZ + cube[i].z) + startingPosition;
     }

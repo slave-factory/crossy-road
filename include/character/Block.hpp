@@ -39,7 +39,7 @@ class Block : public sf::Drawable, public sf::Transformable{
 
         // 논리 좌표 x, y, z를 기준으로 블럭 생성
         Block(int x, int y, int z, sf::Vector2f start);
-        static constexpr float BLOCK_WIDTH = 12.f, BLOCK_DEPTH = 12.f, BLOCK_HEIGHT = 20.f;
+        static constexpr float BLOCK_WIDTH = 6.f, BLOCK_DEPTH = 6.f, BLOCK_HEIGHT = 10.f;
     
         // 3D 도형의 중심점을 얻기 위한 함수
         sf::Vector2f getCenter();

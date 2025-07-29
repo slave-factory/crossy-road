@@ -6,35 +6,42 @@ Character::Character(sf::Vector2f start) : startingPoint(start), isJumping(false
     initSetting();
 }
 
+/**
+ *  @brief 캐릭터의 초기 설정
+ *  @details 캐릭터의 중심점 계산 / 히트 박스 설정 / 시작 캐릭터 이미지 생성
+ *  
+ *  @todo 히트 박스 설정에 대한 세세한 작업 필요
+ */
 void Character::initSetting() {
 
     // 중심점 계산용...캐릭터 최대 크기를 기반으로 중심점 생성
     Block temp = Block(CHARACTER_WIDTH / 2, CHARACTER_HEIGHT / 2, CHARACTER_DEPTH / 2, startingPoint);
 
+    /////////////////////////////////////////////////// 히트 박스 수정 파트
+    // 중심점 설정
     sf::Vector2f center = temp.getCenter();
     setOrigin(center);
     setPosition(center);
-    loadFromJson("cross");
-}
 
-
-/**
- *  @brief 캐릭터를 화면에 그리는 함수
- *  @details design 3차원 배열을 읽어서 window에 직접 그림 
- */
-void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    states.transform *= getTransform();
+    // 히트 박스 설정
+    hit.setRadius(55.f);
+    hit.setOrigin(sf::Vector2f(55.f, 55.f));
+    hit.setPointCount(6);
+    hit.setPosition(center);
     
-    for (int z = 0; z < CHARACTER_DEPTH; z++) {
-        for (int y = 0; y < CHARACTER_HEIGHT; y++) {
-            for (int x = 0; x < CHARACTER_WIDTH; x++) {
-                if (design[z][y][x]) {
-                    Block block = Block(x,y,z,startingPoint);
-                    target.draw(block, states);
-                }
-            }
-        }
-    }
+    // 진짜 경계
+    hitBox = hit.getGlobalBounds();
+
+    // 이 코드는 단순히 경계를 보여주는 용도
+    bounds.setFillColor(sf::Color::Transparent);
+    bounds.setOutlineThickness(1.f);
+    bounds.setOutlineColor(sf::Color::Red);
+    bounds.setPosition(hitBox.left, hitBox.top + 15.f);
+    bounds.setSize(sf::Vector2f(hitBox.width, hitBox.height));
+    ////////////////////////////////////////////////////
+
+    // 시작 캐릭터 이미지 생성
+    loadFromJson("cube");
 }
 
 
@@ -164,4 +171,26 @@ void Character::loadFromJson(const std::string& characterName) {
 void Character::changeCharacter(const std::string& characterName) {
     loadFromJson(characterName);
     currentDirection = Direction::FRONT;
+}
+
+/**
+ *  @brief 캐릭터를 화면에 그리는 함수
+ *  @details design 3차원 배열을 읽어서 window에 직접 그림 
+ */
+void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+    states.transform *= getTransform();
+
+    target.draw(bounds, states);
+
+    for (int z = 0; z < CHARACTER_DEPTH; z++) {
+        for (int y = 0; y < CHARACTER_HEIGHT; y++) {
+            for (int x = 0; x < CHARACTER_WIDTH; x++) {
+                if (design[z][y][x]) {
+                    Block block = Block(x,y,z,startingPoint);
+                    target.draw(block, states);
+                }
+            }
+        }
+    }
+
 }
