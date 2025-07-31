@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Block.hpp"
+#include "CharacterBlock.hpp"
 #include "Direction.hpp"
 #include "json.hpp"
 #include <fstream>
@@ -18,7 +18,7 @@ class Character : public sf::Drawable, public sf::Transformable{
         bool isJumping;
         Direction currentDirection;
 
-        const int CHARACTER_WIDTH = 13, CHARACTER_HEIGHT = 13, CHARACTER_DEPTH = 20;
+        const int CHARACTER_WIDTH = 9, CHARACTER_HEIGHT = 9, CHARACTER_DEPTH = 13;
 
         // 실제 캐릭터를 회전시키는 함수
         void rotateCharacter(bool isRight);
@@ -31,6 +31,7 @@ class Character : public sf::Drawable, public sf::Transformable{
 
         void loadFromJson(const std::string& characterName);
 
+        // 히트 박스 관리 부분
         sf::CircleShape hit;
         sf::FloatRect hitBox;
         sf::RectangleShape bounds;

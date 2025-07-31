@@ -1,12 +1,12 @@
-#include "character/Block.hpp"
+#include "character/CharacterBlock.hpp"
 
-Block::Block(int x, int y, int z, sf::Vector2f start) : top(sf::Triangles, 6), right(sf::Triangles, 6), left(sf::Triangles, 6), startingPosition(start),
+CharacterBlock::CharacterBlock(int x, int y, int z, sf::Vector2f start) : top(sf::Triangles, 6), right(sf::Triangles, 6), left(sf::Triangles, 6), startingPosition(start),
     gridX(x), gridY(y), gridZ(z) {
 
     initSetting();
 }   
 
-void Block::initSetting() {
+void CharacterBlock::initSetting() {
 
     // cube의 3D 논리 좌표를 2D 격자 좌표로 변경
     for (int i = 0; i < POINT_COUNT; i++) {
@@ -21,6 +21,7 @@ void Block::initSetting() {
     top[4].position = points[6];
     top[5].position = points[1];
 
+
     // left
     left[0].position = points[2];
     left[1].position = points[3];
@@ -28,6 +29,7 @@ void Block::initSetting() {
     left[3].position = points[4];
     left[4].position = points[0];
     left[5].position = points[2];
+
 
     // right
     right[0].position = points[6];
@@ -37,8 +39,8 @@ void Block::initSetting() {
     right[4].position = points[5];
     right[5].position = points[6];
 
-    // lines
 
+    // lines
     lines.setPrimitiveType(sf::Lines);
     lines.resize(18);
 
@@ -61,14 +63,14 @@ void Block::initSetting() {
 /**
  *  @brief 등각투영을 통해 3차원 좌표를 2차원으로 변경해주는 함수
  */
-sf::Vector2f Block::convertIsometric(int x, int y, int z) const {
+sf::Vector2f CharacterBlock::convertIsometric(int x, int y, int z) const {
     return {
         (x - y) * BLOCK_WIDTH / 2.0f,
         (x + y) * BLOCK_DEPTH / 2.0f - z * BLOCK_HEIGHT * 0.4f
     };
 }
 
-void Block::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+void CharacterBlock::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     states.transform *= getTransform();
     target.draw(top, states);
     target.draw(left, states);
@@ -78,6 +80,6 @@ void Block::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
 // 만들어지는 전체 캐릭터의 중심점을 반환
 // 다른 클래스로 옮기는 것도 좋은데, 아직 고민 중
-sf::Vector2f Block::getCenter() {
+sf::Vector2f CharacterBlock::getCenter() {
     return  convertIsometric(gridX + cube[0].x, gridY + cube[0].y ,gridZ + cube[0].z) + startingPosition;
 }

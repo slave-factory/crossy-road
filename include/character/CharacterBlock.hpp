@@ -6,7 +6,7 @@
 
 // 실제 좌표가 아닌 격자 좌표를 기준으로 만들기
 
-class Block : public sf::Drawable, public sf::Transformable{
+class CharacterBlock : public sf::Drawable, public sf::Transformable{
 
     private:
 
@@ -35,11 +35,13 @@ class Block : public sf::Drawable, public sf::Transformable{
         void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
         sf::Vector2f startingPosition;
+
+
     public:
 
         // 논리 좌표 x, y, z를 기준으로 블럭 생성
-        Block(int x, int y, int z, sf::Vector2f start);
-        static constexpr float BLOCK_WIDTH = 6.f, BLOCK_DEPTH = 6.f, BLOCK_HEIGHT = 10.f;
+        CharacterBlock(int x, int y, int z, sf::Vector2f start);
+        static constexpr float BLOCK_WIDTH = 9.f, BLOCK_DEPTH = 9.f, BLOCK_HEIGHT = 12.f;
     
         // 3D 도형의 중심점을 얻기 위한 함수
         sf::Vector2f getCenter();

@@ -44,7 +44,7 @@ int main() {
                     character.changeCharacter("chicken");
                 }
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-                    character.changeCharacter("cross");
+                    character.changeCharacter("cube");
                 }
                 // 캐릭터 변경을 확인하기 위한 임시 기능
 

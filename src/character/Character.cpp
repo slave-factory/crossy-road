@@ -15,33 +15,25 @@ Character::Character(sf::Vector2f start) : startingPoint(start), isJumping(false
 void Character::initSetting() {
 
     // 중심점 계산용...캐릭터 최대 크기를 기반으로 중심점 생성
-    Block temp = Block(CHARACTER_WIDTH / 2, CHARACTER_HEIGHT / 2, CHARACTER_DEPTH / 2, startingPoint);
-
-    /////////////////////////////////////////////////// 히트 박스 수정 파트
-    // 중심점 설정
+    CharacterBlock temp = CharacterBlock(CHARACTER_WIDTH / 2, CHARACTER_HEIGHT / 2, CHARACTER_DEPTH / 2, startingPoint);
     sf::Vector2f center = temp.getCenter();
-    setOrigin(center);
-    setPosition(center);
 
     // 히트 박스 설정
-    hit.setRadius(55.f);
-    hit.setOrigin(sf::Vector2f(55.f, 55.f));
+    hit.setRadius(50.f);
+    hit.setOrigin(50.f, 50.f);
     hit.setPointCount(6);
     hit.setPosition(center);
-    
-    // 진짜 경계
+
     hitBox = hit.getGlobalBounds();
 
-    // 이 코드는 단순히 경계를 보여주는 용도
     bounds.setFillColor(sf::Color::Transparent);
-    bounds.setOutlineThickness(1.f);
     bounds.setOutlineColor(sf::Color::Red);
-    bounds.setPosition(hitBox.left, hitBox.top + 15.f);
+    bounds.setOutlineThickness(1.f);
     bounds.setSize(sf::Vector2f(hitBox.width, hitBox.height));
-    ////////////////////////////////////////////////////
+    bounds.setPosition(hitBox.left, hitBox.top);
 
     // 시작 캐릭터 이미지 생성
-    loadFromJson("cube");
+    loadFromJson("chicken");
 }
 
 
@@ -186,7 +178,7 @@ void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         for (int y = 0; y < CHARACTER_HEIGHT; y++) {
             for (int x = 0; x < CHARACTER_WIDTH; x++) {
                 if (design[z][y][x]) {
-                    Block block = Block(x,y,z,startingPoint);
+                    CharacterBlock block = CharacterBlock(x,y,z,startingPoint);
                     target.draw(block, states);
                 }
             }
