@@ -44,7 +44,8 @@ void Mapping::initMap() {
     std::random_device rd;                   
     std::mt19937 gen(rd());                    
     std::uniform_int_distribution<> dist(1, 10); 
-    for(int i=0; i<= MAPLEN + 2*mapFreespace; i++) {
+
+    for(int i=0; i< MAPLEN + 2*mapFreespace; i++) {
         int bottomValue = dist(gen);
         for (int j = 0; j < MAPLEN + mapFreespace * 2; ++j)
             temp[0][i][j] = (bottomValue <= 7 ? 1 : 0);
@@ -52,19 +53,14 @@ void Mapping::initMap() {
         for (int j = 0; j < MAPLEN + mapFreespace * 2; ++j)
             temp[0][i][j] = (bottomValue <= 5 ? 2 : 1);
 
-        for(int t = 1; t < 5; ++t) {
+        for (int t = 1; t < MAX_Z; ++t) {
             for (int j = 0; j < MAPLEN + mapFreespace * 2; ++j) {
-                if(t == 0) {
-                    if(dist(gen) <= 3) {
-                        temp[t][i][j] = 1;
-                    }
+                if (dist(gen) <= 3 && temp[t - 1][i][j] == 1) {
+                    temp[t][i][j] = 1;
                 }
                 else {
-                    if(dist(gen) <= 3 && temp[t-1][i][j]) {
-                        temp[t][i][j] = 1;
-                    }
+                    temp[t][i][j] = 0;
                 }
-                
             }
         }
 

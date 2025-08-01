@@ -1,8 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-
-class Block; 
+#include "Block.hpp"
 
 class Mapping {
     public:
