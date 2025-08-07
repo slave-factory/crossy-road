@@ -7,7 +7,7 @@
 Block::Block(sf::RenderWindow& window, Mapping& map)
     : len(static_cast<float>(window.getSize().x) / Mapping::MAPLEN * 0.75),
       lenDiagonal(len / std::sqrt(2.0f)) {
-  
+        
 }
 void Block::draw(sf::RenderWindow& window, const sf::Vector2f& base, int color) {
     // 7개 꼭짓점 계산
